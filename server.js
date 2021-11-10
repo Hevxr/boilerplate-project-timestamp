@@ -3,6 +3,7 @@
 
 // init project
 var express = require('express');
+const moment = require('moment')
 var app = express();
 
 // enable CORS (https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
@@ -20,8 +21,9 @@ app.get("/", function (req, res) {
 
 
 // your first API endpoint... 
-app.get("/api/hello", function (req, res) {
-  res.json({greeting: 'hello API'});
+app.get("/api/:timeStamp", function (req, res) {
+  var time = moment(req.params.timeStamp).unix().toString();
+  res.json({"unix": time, "utc" : time});
 });
 
 
@@ -29,4 +31,9 @@ app.get("/api/hello", function (req, res) {
 // listen for requests :)
 var listener = app.listen(process.env.PORT, function () {
   console.log('Your app is listening on port ' + listener.address().port);
+
 });
+
+var time =  1451001600000;
+time = moment(time).unix();
+console.log(time);
