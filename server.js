@@ -22,8 +22,15 @@ app.get("/", function (req, res) {
 
 // your first API endpoint... 
 app.get("/api/:timeStamp", function (req, res) {
-  var time = moment(req.params.timeStamp).unix().toString();
-  res.json({"unix": time, "utc" : time});
+  var time = req.params.timeStamp;
+  var dateTimeRegex = /[0-9]{4}-[0-9]{2}-[0-9]{2}/g
+  if (dateTimeRegex.test(time)) {
+    time = new Date(time);
+
+  } else {
+    time = moment(parseInt(time));
+  };
+  res.json({"unix": moment(time).valueOf().toString(), "utc" : time});
 });
 
 
@@ -33,7 +40,6 @@ var listener = app.listen(process.env.PORT, function () {
   console.log('Your app is listening on port ' + listener.address().port);
 
 });
+/* var time =  "1451001600000"; */
 
-var time =  1451001600000;
-time = moment(time).unix();
-console.log(time);
+
